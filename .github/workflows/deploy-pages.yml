@@ -1,0 +1,63 @@
+name: Build & deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          # Creates the Pages site (source: GitHub Actions) on the first run.
+          enablement: true
+
+      - name: Build
+        run: |
+          set -euo pipefail
+          test -f index.html
+          # Fail the build early if the app shell lost its core wiring.
+          grep -q 'localStorage' index.html
+          grep -q 'helen.todo.v1' index.html
+          mkdir -p _site
+          cp index.html _site/index.html
+          # Build stamp so a live deploy can be traced back to a commit.
+          sed -i "s|</head>|<!-- deploy ${GITHUB_SHA} @ ${GITHUB_RUN_ID} --></head>|" _site/index.html
+          printf '%s\n' "${GITHUB_SHA}" > _site/COMMIT.txt
+          ls -la _site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Report
+        run: echo "Deployed to ${{ steps.deployment.outputs.page_url }}"
