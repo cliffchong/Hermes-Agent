@@ -24,9 +24,10 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          # Creates the Pages site (source: GitHub Actions) on the first run.
-          enablement: true
+        # Note: `enablement: true` is deliberately NOT used. The automatic
+        # GITHUB_TOKEN can never create a Pages site — that is a repo-admin
+        # operation. Enable Pages once by hand (Settings -> Pages -> Source:
+        # GitHub Actions); every deploy afterwards is fully automated.
 
       - name: Build
         run: |

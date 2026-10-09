@@ -52,3 +52,13 @@ Add `?demo=1` to load sample tasks without writing to storage.
 2. **deploy** — `actions/deploy-pages` publishes the artifact to the `github-pages` environment.
 
 The live page carries a `<!-- deploy <sha> -->` comment in its `<head>`, so a deployed revision can always be traced back to a commit.
+
+### One-time setup (must be done once, outside the workflow)
+
+A Pages site cannot be created by the workflow itself — `POST /repos/{owner}/{repo}/pages` is a repository-administration call, and the automatic `GITHUB_TOKEN` has no admin rights (`Create Pages site failed: Resource not accessible by integration`). It therefore has to be enabled once, out of band:
+
+- GitHub UI: **Settings → Pages → Source: GitHub Actions**, or
+- API: `POST /repos/{owner}/{repo}/pages` with a token holding the **Pages: write** permission.
+
+Once the site exists with `build_type: workflow`, every push to `main` deploys automatically; `enablement: true` is intentionally absent from the workflow for the reason above.
+
