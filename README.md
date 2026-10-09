@@ -4,6 +4,18 @@ A single-file, dependency-free task manager. No build step, no framework, no CDN
 
 **Live:** https://cliffchong.github.io/Hermes-Agent/
 
+## Repository contents
+
+| Path | What it is |
+|---|---|
+| `index.html` | The Todo List app — the file GitHub Pages publishes |
+| `projects/todo-app/` | Todo List source, deployment scripts and the Chinese work log |
+| `projects/meeting-deck/` | Single-file HTML presentation (20 slides) summarising a one-hour meeting, plus its PDF export |
+| `projects/restaurant-site/` | Japanese restaurant homepage (single page + photo assets) |
+| `.github/workflows/deploy-pages.yml` | Builds and deploys `index.html` to GitHub Pages |
+
+Only `index.html` is published to the live site; everything under `projects/` is archived in the repo and is not part of the deployment.
+
 ## Features
 
 | Feature | Notes |

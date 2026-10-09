@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>旬 SHUN 割烹・和食 — 香港中環 | 板前料理 · 當造食材</title>
+<meta name="description" content="位於中環的八席板前割烹。每日日本直送當造食材，以備長炭與手仕事呈上季節和食。午市 12:00–15:00、晚市 18:00–23:00，歡迎線上訂座。">
+<meta name="robots" content="noindex, nofollow"><!-- 示範網站：正式上線前刪除此行 -->
+<meta property="og:title" content="旬 SHUN 割烹・和食">
+<meta property="og:description" content="八席板前，一室之和。當造食材，親手呈上。">
+<meta property="og:type" content="restaurant">
+<link rel="preload" as="image" href="assets/hero-counter.jpg">
+
+<style>
+  /* ============================================================
+     1. Design tokens
+     ============================================================ */
+  :root {
+    --paper:      #f5f1e8;
+    --paper-2:    #ebe5d8;
+    --surface:    #fdfbf6;
+    --ink:        #1b1916;
+    --ink-soft:   #45403a;
+    --muted:      #6f6759;
+    --line:       #ddd5c4;
+    --line-2:     #c9bfa9;
+    --shu:        #a8341c;   /* 朱 */
+    --shu-2:      #8b2a15;
+    --shu-tint:   #f6e7e1;
+    --gold:       #a98a54;   /* 金 */
+    --indigo:     #24395c;   /* 藍（暖簾） */
+    --shadow-sm:  0 1px 2px rgba(27, 25, 22, .06), 0 8px 24px -18px rgba(27, 25, 22, .35);
+    --shadow-lg:  0 30px 70px -40px rgba(27, 25, 22, .55), 0 2px 10px -4px rgba(27, 25, 22, .12);
+
+    --serif: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "Songti SC", "STSong",
+             "PingFang TC", "Microsoft JhengHei", "Times New Roman", serif;
+    --sans:  "Noto Sans TC", "PingFang TC", "Hiragino Sans TC", "Microsoft JhengHei",
+             "Heiti TC", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    --wrap: 1200px;
+    --gutter: clamp(20px, 5vw, 64px);
+    --section-y: clamp(72px, 9vw, 132px);
+    --radius: 3px;
+    --ease: cubic-bezier(.22, .68, .28, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:    #12110f;
+      --paper-2:  #0d0c0b;
+      --surface:  #1a1815;
+      --ink:      #f1ece1;
+      --ink-soft: #cfc8ba;
+      --muted:    #a49b8c;
+      --line:     #2c2a25;
+      --line-2:   #3d3a32;
+      --shu:      #d4563a;
+      --shu-2:    #e2765c;
+      --shu-tint: #2e1a14;
+      --gold:     #c6a56a;
+      --indigo:   #8fa6cc;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.5), 0 8px 24px -18px rgba(0,0,0,.8);
+      --shadow-lg: 0 30px 70px -40px rgba(0,0,0,.9);
+    }
+  }
+
+  /* ============================================================
+     2. Base
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.75;
+    letter-spacing: .01em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: .02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  p { margin: 0; }
+  :focus-visible { outline: 2px solid var(--shu); outline-offset: 3px; }
+
+  .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: var(--section-y); }
+  .section + .section { border-top: 1px solid var(--line); }
+  section[id] { scroll-margin-top: 96px; }
+
+  .label {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .32em;
+    color: var(--shu);
+    text-transform: uppercase;
+  }
+  .label span { color: var(--muted); letter-spacing: .18em; margin-left: 10px; }
+  h2.title { font-size: clamp(30px, 4vw, 46px); margin-top: 18px; }
+  .lede { margin-top: 22px; color: var(--ink-soft); max-width: 62ch; }
+  .jp { font-family: var(--serif); }
+  .small { font-size: 14px; color: var(--muted); }
+
+  .skip-link {
+    position: absolute; left: -999px; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper); padding: 12px 18px;
+  }
+  .skip-link:focus { left: 12px; top: 12px; }
+
+  /* ============================================================
+     3. Notice bar (示範資料提示 — 正式上線前刪除)
+     ============================================================ */
+  .notice {
+    background: var(--ink); color: var(--paper);
+    font-size: 13.5px; letter-spacing: .02em;
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    padding: 10px 46px 10px 18px; position: relative;
+  }
+  .notice[hidden] { display: none; }
+  .notice b { font-weight: 600; color: var(--gold); }
+  .notice button {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    background: transparent; border: 0; color: inherit; cursor: pointer;
+    font-size: 18px; line-height: 1; padding: 8px 10px; border-radius: 4px;
+  }
+  .notice button:hover { background: rgba(255,255,255,.12); }
+
+  /* ============================================================
+     4. Header
+     ============================================================ */
+  .site-header {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--paper) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .site-header.is-stuck {
+    border-bottom-color: var(--line);
+    box-shadow: var(--shadow-sm);
+  }
+  .bar {
+    display: flex; align-items: center; gap: 22px;
+    min-height: 76px;
+  }
+  .brand { display: flex; align-items: center; gap: 13px; margin-right: auto; }
+  .brand .mark {
+    font-family: var(--serif);
+    font-size: 30px; font-weight: 700; line-height: 1;
+    width: 46px; height: 46px; flex: none;
+    display: grid; place-items: center;
+    background: var(--shu); color: #fff;
+    border-radius: 2px;
+  }
+  .brand .name { font-family: var(--serif); font-size: 20px; font-weight: 600; letter-spacing: .16em; }
+  .brand .sub { font-size: 11.5px; letter-spacing: .3em; color: var(--muted); display: block; margin-top: 3px; }
+
+  .nav { display: flex; align-items: center; gap: 4px; }
+  .nav a {
+    font-size: 15px; padding: 10px 13px; border-radius: 2px;
+    color: var(--ink-soft); position: relative; white-space: nowrap;
+  }
+  .nav a::after {
+    content: ""; position: absolute; left: 13px; right: 13px; bottom: 4px; height: 1px;
+    background: var(--shu); transform: scaleX(0); transform-origin: left;
+    transition: transform .28s var(--ease);
+  }
+  .nav a:hover { color: var(--ink); }
+  .nav a:hover::after, .nav a.is-current::after { transform: scaleX(1); }
+  .nav a.is-current { color: var(--ink); }
+
+  .header-actions { display: flex; align-items: center; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 46px; padding: 0 22px;
+    font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: .06em;
+    border: 1px solid var(--shu); border-radius: var(--radius);
+    background: var(--shu); color: #fff; cursor: pointer;
+    transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .1s var(--ease);
+  }
+  .btn:hover { background: var(--shu-2); border-color: var(--shu-2); }
+  .btn:active { transform: translateY(1px); }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line-2); }
+  .btn.ghost:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .btn.on-dark { border-color: rgba(255,255,255,.7); background: #fff; color: #1b1916; }
+  .btn.on-dark:hover { background: rgba(255,255,255,.88); }
+  .btn.on-dark-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
+  .btn.on-dark-ghost:hover { background: rgba(255,255,255,.14); border-color: #fff; }
+
+  .burger {
+    display: none; width: 46px; height: 46px; flex: none;
+    background: transparent; border: 1px solid var(--line-2); border-radius: var(--radius);
+    cursor: pointer; padding: 0; place-items: center;
+  }
+  .burger span { display: block; width: 20px; height: 1.5px; background: var(--ink); position: relative; }
+  .burger span::before, .burger span::after {
+    content: ""; position: absolute; left: 0; width: 20px; height: 1.5px; background: var(--ink);
+    transition: transform .25s var(--ease), top .25s var(--ease);
+  }
+  .burger span::before { top: -6px; }
+  .burger span::after { top: 6px; }
+  .burger[aria-expanded="true"] span { background: transparent; }
+  .burger[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
+  .burger[aria-expanded="true"] span::after { top: 0; transform: rotate(-45deg); }
+
+  /* ============================================================
+     5. Hero
+     ============================================================ */
+  .hero {
+    position: relative;
+    min-height: clamp(560px, 88vh, 900px);
+    display: flex; align-items: flex-end;
+    color: #fff; overflow: hidden;
+    margin-top: -1px;
+  }
+  .hero img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: 42% 50%;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(12,11,10,.62) 0%, rgba(12,11,10,.18) 34%, rgba(12,11,10,.78) 100%),
+      linear-gradient(90deg, rgba(12,11,10,.55) 0%, rgba(12,11,10,0) 62%);
+  }
+  .hero .inner {
+    position: relative; z-index: 2;
+    padding-block: clamp(48px, 7vw, 96px);
+    width: 100%;
+  }
+  .hero .kicker {
+    font-size: 13px; letter-spacing: .42em; color: rgba(255,255,255,.82);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero .kicker::before { content: ""; width: 42px; height: 1px; background: var(--gold); }
+  .hero h1 {
+    font-size: clamp(52px, 9vw, 118px);
+    font-weight: 700; letter-spacing: .1em; line-height: 1.02;
+    margin-top: 22px;
+  }
+  .hero h1 small {
+    display: block; font-size: clamp(13px, 1.5vw, 17px); font-weight: 500;
+    letter-spacing: .5em; color: var(--gold); margin-bottom: 16px;
+  }
+  .hero .tagline {
+    margin-top: 24px; font-size: clamp(17px, 2.1vw, 23px);
+    font-family: var(--serif); color: rgba(255,255,255,.94);
+    max-width: 26ch; line-height: 1.6;
+  }
+  .hero .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 38px; }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 10px 30px; margin-top: 40px;
+    padding-top: 22px; border-top: 1px solid rgba(255,255,255,.24);
+    font-size: 14px; letter-spacing: .08em; color: rgba(255,255,255,.86);
+  }
+  .hero .meta span { display: inline-flex; align-items: center; gap: 9px; }
+  .hero .meta i { font-style: normal; color: var(--gold); }
+
+  /* ============================================================
+     6. About
+     ============================================================ */
+  .about { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .about-body { margin-top: 26px; display: grid; gap: 20px; color: var(--ink-soft); }
+  .facts { margin: 34px 0 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .facts > div {
+    display: grid; grid-template-columns: 104px 1fr; gap: 20px;
+    padding: 15px 0; border-bottom: 1px solid var(--line);
+  }
+  .facts dt { font-family: var(--serif); font-size: 14px; letter-spacing: .18em; color: var(--shu); }
+  .facts dd { margin: 0; font-size: 15.5px; color: var(--ink-soft); }
+
+  figure { margin: 0; }
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .frame:hover img { transform: scale(1.045); }
+  .portrait-frame { aspect-ratio: 3 / 4; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+
+  /* ============================================================
+     7. Philosophy
+     ============================================================ */
+  .tenets { margin-top: 52px; border-top: 1px solid var(--line); }
+  .tenet {
+    display: grid; grid-template-columns: 120px 1fr; gap: clamp(20px, 4vw, 56px);
+    padding: clamp(26px, 3.4vw, 40px) 0; border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .tenet .num {
+    font-family: var(--serif); font-size: clamp(40px, 5vw, 62px); line-height: .9;
+    color: var(--shu); opacity: .9;
+  }
+  .tenet h3 { font-size: clamp(21px, 2.4vw, 27px); }
+  .tenet h3 em { font-style: normal; font-size: 14px; letter-spacing: .3em; color: var(--muted); display: block; margin-bottom: 10px; font-family: var(--sans); }
+  .tenet p { margin-top: 14px; color: var(--ink-soft); max-width: 66ch; }
+
+  .band { margin-top: clamp(48px, 6vw, 84px); }
+  .band .frame { aspect-ratio: 21 / 9; }
+  .band .frame::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(12,11,10,.5), rgba(12,11,10,.05));
+  }
+  .band .quote {
+    position: absolute; left: clamp(24px, 4vw, 56px); bottom: clamp(22px, 3vw, 44px); right: 30%;
+    z-index: 2; color: #fff; font-family: var(--serif);
+    font-size: clamp(19px, 2.4vw, 30px); line-height: 1.5;
+  }
+  .band .quote small { display: block; font-family: var(--sans); font-size: 12.5px; letter-spacing: .3em; color: var(--gold); margin-top: 14px; }
+
+  /* ============================================================
+     8. Dish categories
+     ============================================================ */
+  .cards {
+    margin-top: 48px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(18px, 2.4vw, 30px);
+  }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    display: flex; flex-direction: column;
+    transition: border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .card:hover { border-color: var(--line-2); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .card .frame { aspect-ratio: 4 / 3; }
+  .card .pad { padding: 24px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+  .card h3 { font-size: 23px; }
+  .card h3 span { display: block; font-family: var(--serif); font-size: 13px; letter-spacing: .26em; color: var(--muted); margin-bottom: 8px; }
+  .card p { margin-top: 12px; font-size: 15.5px; color: var(--ink-soft); flex: 1; }
+  .card .link {
+    margin-top: 22px; display: inline-flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 600; letter-spacing: .1em; color: var(--shu);
+    align-self: flex-start;
+  }
+  .card .link span { display: flex; flex-direction: column; gap: 3px; line-height: 1.15; }
+  .card .link small {
+    font-size: 9.5px; letter-spacing: .24em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+  }
+  .card .link svg { transition: transform .3s var(--ease); }
+  .card:hover .link svg { transform: translateX(5px); }
+
+  .cards-foot {
+    margin-top: 34px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 26px;
+    justify-content: space-between; padding-top: 28px; border-top: 1px solid var(--line);
+  }
+
+  /* ============================================================
+     9. Gallery
+     ============================================================ */
+  .gallery {
+    margin-top: 48px; display: grid; gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gallery .cell { position: relative; overflow: hidden; background: var(--paper-2); }
+  .gallery .cell img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
+  .gallery .cell:hover img { transform: scale(1.05); }
+  .gallery .cell figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
+    padding: 40px 20px 16px; color: #fff; font-size: 13.5px; letter-spacing: .06em;
+    background: linear-gradient(180deg, rgba(12,11,10,0) 0%, rgba(12,11,10,.78) 100%);
+  }
+  .g-wide { grid-column: span 2; aspect-ratio: 16 / 9; }
+  .g-tall { grid-row: span 2; aspect-ratio: 3 / 4; }
+  .g-sq { aspect-ratio: 4 / 3; }
+
+  /* ============================================================
+     10. Hours + contact
+     ============================================================ */
+  .info-grid { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 76px); }
+  .hours { width: 100%; border-collapse: collapse; }
+  .hours caption { text-align: left; font-family: var(--serif); font-size: 22px; margin-bottom: 18px; }
+  .hours th, .hours td { text-align: left; padding: 16px 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+  .hours th { font-family: var(--serif); font-size: 15px; font-weight: 600; letter-spacing: .1em; width: 42%; color: var(--ink); }
+  .hours td { font-size: 15.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .hours tr.closed td { color: var(--shu); }
+  .hours-note { margin-top: 18px; font-size: 14px; color: var(--muted); }
+
+  .contact-list { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .contact-list > div { display: grid; grid-template-columns: 92px 1fr; gap: 18px; padding: 17px 0; border-bottom: 1px solid var(--line); }
+  .contact-list dt { font-family: var(--serif); font-size: 14px; letter-spacing: .16em; color: var(--shu); }
+  .contact-list dd { margin: 0; font-size: 16px; color: var(--ink-soft); }
+  .contact-list a { border-bottom: 1px solid var(--line-2); }
+  .contact-list a:hover { color: var(--shu); border-color: var(--shu); }
+  .map-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 14.5px; font-weight: 600; color: var(--shu); }
+  .map-link:hover { text-decoration: underline; }
+
+  /* ============================================================
+     11. Reservation
+     ============================================================ */
+  .reserve { background: var(--paper-2); }
+  .reserve-card {
+    margin-top: 44px; background: var(--surface);
+    border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+    padding: clamp(26px, 4vw, 52px);
+    display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(30px, 4vw, 64px);
+  }
+  .reserve-card h3 { font-size: clamp(22px, 2.6vw, 30px); }
+  .reserve-card .pitch { margin-top: 18px; color: var(--ink-soft); }
+  .reserve-aside { border-top: 1px solid var(--line); margin-top: 26px; padding-top: 22px; display: grid; gap: 10px; font-size: 14.5px; color: var(--muted); }
+  .reserve-aside b { color: var(--ink); font-weight: 600; }
+
+  form.booking { display: grid; gap: 16px; }
+  .field { display: grid; gap: 8px; }
+  .field label { font-size: 13.5px; font-weight: 600; letter-spacing: .08em; color: var(--ink-soft); }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea {
+    font: inherit; font-size: 15.5px; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--radius);
+    padding: 12px 14px; min-height: 48px; width: 100%;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--shu); box-shadow: 0 0 0 3px var(--shu-tint); }
+  .hint { font-size: 13px; color: var(--muted); }
+  .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 4px; }
+  .form-status { font-size: 14.5px; color: var(--shu); }
+  .form-status:empty { display: none; }
+
+  /* ============================================================
+     12. Footer
+     ============================================================ */
+  .site-footer { background: var(--ink); color: var(--paper); }
+  .site-footer .top {
+    padding-block: clamp(52px, 6vw, 84px);
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: clamp(28px, 4vw, 56px);
+  }
+  .site-footer h3 { font-size: 15px; letter-spacing: .26em; font-family: var(--sans); font-weight: 600; color: var(--gold); }
+  .site-footer ul { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 11px; font-size: 15px; }
+  .site-footer a { color: rgba(245,241,232,.86); }
+  .site-footer a:hover { color: #fff; border-bottom: 1px solid var(--gold); }
+  .footer-brand .mark { font-family: var(--serif); font-size: 26px; letter-spacing: .18em; }
+  .footer-brand p { margin-top: 16px; font-size: 14.5px; color: rgba(245,241,232,.72); max-width: 30ch; }
+  .footer-brand .hours-mini { margin-top: 18px; font-size: 13.5px; color: rgba(245,241,232,.72); font-variant-numeric: tabular-nums; }
+  .site-footer .bottom {
+    border-top: 1px solid rgba(245,241,232,.16);
+    padding-block: 24px; display: flex; flex-wrap: wrap; gap: 12px 28px;
+    justify-content: space-between; font-size: 13px; color: rgba(245,241,232,.6);
+  }
+
+  /* ============================================================
+     13. Reveal on scroll
+     ============================================================ */
+  .reveal { opacity: 0; transform: translateY(22px); }
+  .reveal.is-in { opacity: 1; transform: none; transition: opacity .7s var(--ease), transform .7s var(--ease); }
+
+  /* ============================================================
+     14. Responsive
+     ============================================================ */
+  @media (max-width: 1080px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .site-footer .top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 900px) {
+    .nav, .header-actions .btn.ghost { display: none; }
+    .burger { display: grid; }
+    .bar { min-height: 66px; }
+    .about { grid-template-columns: 1fr; }
+    .about .media { order: -1; }
+    .info-grid, .reserve-card { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .g-wide { grid-column: span 2; }
+    .g-tall { grid-row: auto; }
+
+    .nav.open {
+      display: flex; flex-direction: column; align-items: stretch;
+      position: fixed; inset: 66px 0 auto 0; z-index: 39;
+      background: var(--paper); border-bottom: 1px solid var(--line);
+      padding: 14px var(--gutter) 26px; gap: 2px;
+      box-shadow: var(--shadow-lg);
+    }
+    .nav.open a { font-size: 17px; padding: 14px 4px; border-bottom: 1px solid var(--line); }
+    .nav.open a::after { display: none; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .cards { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: 1fr; }
+    .g-wide { grid-column: span 1; aspect-ratio: 16 / 10; }
+    .tenet { grid-template-columns: 1fr; gap: 14px; }
+    .facts > div, .contact-list > div { grid-template-columns: 1fr; gap: 6px; }
+    .facts dt, .contact-list dt { font-size: 13px; }
+    .hero .cta .btn { flex: 1 1 auto; }
+    .site-footer .top { grid-template-columns: 1fr; }
+    .row-2 { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- 示範資料提示：正式提供資料後刪除整個 .notice 區塊 -->
+<div class="notice" id="notice" role="status">
+  <span><b>示範內容</b> — 店名、地址、電話、營業時間與相片均為暫定，待你提供正式資料後更新。</span>
+  <button type="button" id="noticeClose" aria-label="關閉提示">×</button>
+</div>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="旬 SHUN 割烹・和食 — 回到頁首">
+      <span class="mark" aria-hidden="true">旬</span>
+      <span>
+        <span class="name jp">SHUN</span>
+        <span class="sub">割烹・和食</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="主選單">
+      <a href="#about">關於我們</a>
+      <a href="#philosophy">料理理念</a>
+      <a href="#menu">菜式</a>
+      <a href="#space">環境</a>
+      <a href="#visit">營業資訊</a>
+      <a href="#reserve">訂座</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="btn ghost" href="menu.html">查看菜單</a>
+      <a class="btn" href="#reserve">線上訂座</a>
+      <button class="burger" id="burger" type="button" aria-label="開啟選單" aria-expanded="false" aria-controls="nav"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="top" aria-label="頁首">
+    <img src="assets/hero-counter.jpg" alt="旬 SHUN 的八席檜木板前，板前師傅正在準備當日刺身" width="2400" height="1346" fetchpriority="high" decoding="async">
+    <div class="inner wrap">
+      <p class="kicker">香港・中環 ｜ KOUNAN STYLE, HONG KONG</p>
+      <h1><small>割烹・和食</small>旬 SHUN</h1>
+      <p class="tagline">不時不食 —— 由板前親手呈上，一席之中的當造滋味。</p>
+      <div class="cta">
+        <a class="btn on-dark" href="#reserve">線上訂座</a>
+        <a class="btn on-dark-ghost" href="menu.html">瀏覽菜單</a>
+      </div>
+      <div class="meta">
+        <span><i>午市</i>12:00 – 15:00</span>
+        <span><i>晚市</i>18:00 – 23:00</span>
+        <span><i>休息</i>逢星期日及公眾假期</span>
+        <span><i>席數</i>板前 8 席・個室 1 間</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="section" id="about">
+    <div class="wrap about">
+      <div class="reveal">
+        <p class="label">關於我們<span>ABOUT</span></p>
+        <h2 class="title">八席板前，一室之和</h2>
+        <div class="about-body">
+          <p>「旬」是一年之中食材最鮮美的短暫時節。我們把店子開在中環一條不張揚的街道，只設八席檜木板前與一間個室，讓每位客人都坐在最接近料理的位置。</p>
+          <p>每日清晨，我們按當造的漁獲與蔬果決定當日菜單：由魚市場直送到店的鮮魚，到自家熬製的出汁、醃漬與甘味，皆由板前在主理。菜單隨季節改動，每次到訪都可能遇見不同的味道。</p>
+        </div>
+        <dl class="facts">
+          <div><dt>座席</dt><dd>檜木板前 8 席、個室 1 間（4–6 人，可包場）</dd></div>
+          <div><dt>料理</dt><dd>每日日本直送漁獲，按當造調整菜單；出汁、漬物、甘味自家製</dd></div>
+          <div><dt>主理</dt><dd>板前主廚，於日本割烹修業逾 20 年</dd></div>
+          <div><dt>開業</dt><dd>2021 年，香港中環</dd></div>
+        </dl>
+      </div>
+      <figure class="media reveal">
+        <div class="frame portrait-frame">
+          <img src="assets/entrance-night.jpg" alt="旬 SHUN 的夜間入口：深色木門、藏藍暖簾與一盞石燈籠" width="1200" height="2139" loading="lazy" decoding="async">
+        </div>
+        <figcaption>入口的藏藍暖簾，是我們與街道之間的一道界線。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== PHILOSOPHY ===================== -->
+  <section class="section" id="philosophy">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="label">料理理念<span>PHILOSOPHY</span></p>
+        <h2 class="title">一期一会，味隨季節</h2>
+        <p class="lede">日本料理的根本，不在複雜，而在「剛剛好」——把當造的食材，用最適合它的方式，在最好的時間送到客人面前。我們以三件事守住這個分寸。</p>
+      </div>
+
+      <div class="tenets reveal">
+        <article class="tenet">
+          <div class="num" aria-hidden="true">一</div>
+          <div>
+            <h3><em>旬 SHUN</em>不時不食</h3>
+            <p>只選當造，不強求四季常備。菜單每兩至三週按漁獲與蔬菜調整，缺貨時寧可換菜，也不以次等食材代替。</p>
+          </div>
+        </article>
+        <article class="tenet">
+          <div class="num" aria-hidden="true">二</div>
+          <div>
+            <h3><em>手仕事 TESHIGOTO</em>一椀一菜，親手做</h3>
+            <p>出汁以昆布與鰹節每日現熬，漬物自家醃製，甘味亦在店內完成。備長炭直火燒烤，讓魚脂與肉汁留在食材裡面。</p>
+          </div>
+        </article>
+        <article class="tenet">
+          <div class="num" aria-hidden="true">三</div>
+          <div>
+            <h3><em>おもてなし OMOTENASHI</em>待客之心</h3>
+            <p>只有八席，所以我們記得每位客人的口味與節奏：酒喝得慢一點，菜就上得慢一點。料理是按你的時間，而不是按我們的時間。</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="band reveal">
+        <figure>
+          <div class="frame">
+            <img src="assets/craft-knife.jpg" alt="板前以柳刃刀在檜木砧板上切分鮪魚" width="1800" height="1010" loading="lazy" decoding="async">
+            <p class="quote">刀與板之間的距離，就是味道的分寸。<small>板前の仕事 ｜ CRAFT</small></p>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DISH CATEGORIES ===================== -->
+  <section class="section" id="menu">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="label">菜式種類<span>OUR MENU</span></p>
+        <h2 class="title">今日的菜單，今日決定</h2>
+        <p class="lede">以下為我們供應的菜式類別。每日實際品項會按當造漁獲調整，完整內容與季節限定請見菜單頁。</p>
+      </div>
+
+      <div class="cards">
+        <article class="card reveal">
+          <div class="frame">
+            <img src="assets/dish-sushi.jpg" alt="握壽司拼盤：鮪魚、海膽、甜蝦與玉子置於黑色陶碟" width="1200" height="1200" loading="lazy" decoding="async">
+          </div>
+          <div class="pad">
+            <h3><span>にぎり</span>握壽司</h3>
+            <p>以赤醋飯輕握當造魚鮮，入口時飯與魚同時化開。單點或交由板前安排。</p>
+            <a class="link" href="menu.html#sushi"><span><small>View Menu</small>查看菜單</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="frame">
+            <img src="assets/dish-sashimi.jpg" alt="刺身拼盤：鮪魚、鰤魚與帶子置於冰上，配紫蘇葉" width="1200" height="1200" loading="lazy" decoding="async">
+          </div>
+          <div class="pad">
+            <h3><span>お造り</span>刺身・前菜</h3>
+            <p>厚切鮮味，配自家調製醬油與生山葵。前菜小品依季節更換，以當日蔬果入饌。</p>
+            <a class="link" href="menu.html#sashimi"><span><small>View Menu</small>查看菜單</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="frame">
+            <img src="assets/dish-robata.jpg" alt="備長炭炉端燒：和牛串與味噌燒魚在炭火上" width="1200" height="1200" loading="lazy" decoding="async">
+          </div>
+          <div class="pad">
+            <h3><span>ろばた焼き</span>炉端燒・燒物</h3>
+            <p>備長炭直火，鎖住肉汁與魚脂。和牛、時令魚與野菜，按當日入貨供應。</p>
+            <a class="link" href="menu.html#robata"><span><small>View Menu</small>查看菜單</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="frame">
+            <img src="assets/dish-tempura.jpg" alt="天婦羅：海老與時令野菜盛於竹籃，附沾汁" width="1200" height="1200" loading="lazy" decoding="async">
+          </div>
+          <div class="pad">
+            <h3><span>天ぷら</span>天婦羅</h3>
+            <p>薄衣輕炸，油溫與時間按食材調整，讓外層酥香而裡面仍保有水分。</p>
+            <a class="link" href="menu.html#tempura"><span><small>View Menu</small>查看菜單</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="frame">
+            <img src="assets/dish-kaiseki.jpg" alt="會席御膳：漆器托盤上擺放煮物、燒魚、椀物、米飯與漬物" width="1200" height="1200" loading="lazy" decoding="async">
+          </div>
+          <div class="pad">
+            <h3><span>会席</span>會席御膳</h3>
+            <p>依季節編排的完整套餐，由前菜到甘味一椀一菜上桌，適合初次到訪的客人。</p>
+            <a class="link" href="menu.html#kaiseki"><span><small>View Menu</small>查看菜單</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="frame">
+            <img src="assets/dish-sake.jpg" alt="季節限定酒餚配對：清酒壺、陶杯與當造小品" width="1200" height="1200" loading="lazy" decoding="async">
+          </div>
+          <div class="pad">
+            <h3><span>お酒と季節</span>季節限定・酒餚配對</h3>
+            <p>每季推出限定品項，並可按料理配對清酒、燒酎與無酒精飲品。</p>
+            <a class="link" href="menu.html#seasonal"><span><small>View Menu</small>查看菜單</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <div class="cards-foot reveal">
+        <p class="small">菜單內標示當造食材與產地；如有食物敏感或素食需要，訂座時告知即可安排。</p>
+        <a class="btn" href="menu.html">查看完整菜單</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SPACE / GALLERY ===================== -->
+  <section class="section" id="space">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="label">環境<span>ATMOSPHERE</span></p>
+        <h2 class="title">和の空間</h2>
+        <p class="lede">八席板前看得到料理的過程，個室適合商談與家庭聚會。空間以檜木、和紙與墨色為主，燈光調至最適合看清食材的亮度。</p>
+      </div>
+
+      <div class="gallery reveal">
+        <figure class="cell g-wide">
+          <img src="assets/room-tatami.jpg" alt="個室：榻榻米座位、和紙障子、矮桌與坐墊" width="1800" height="1010" loading="lazy" decoding="async">
+          <figcaption>個室（座敷）｜ 4–6 人，可作商談或家庭聚會</figcaption>
+        </figure>
+        <figure class="cell g-tall">
+          <img src="assets/entrance-night.jpg" alt="餐廳入口：夜間的木門、暖簾與石燈籠" width="1200" height="2139" loading="lazy" decoding="async">
+          <figcaption>入口 ｜ 中環，步行可達</figcaption>
+        </figure>
+        <figure class="cell g-sq">
+          <img src="assets/table-sake.jpg" alt="餐桌細節：清酒、陶杯、餐巾與筷子" width="1800" height="1010" loading="lazy" decoding="async">
+          <figcaption>酒器與食器 ｜ 依料理配對清酒</figcaption>
+        </figure>
+        <figure class="cell g-sq">
+          <img src="assets/hero-counter.jpg" alt="板前檜木吧檯與座位" width="2400" height="1346" loading="lazy" decoding="async">
+          <figcaption>檜木板前 ｜ 8 席</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOURS + CONTACT ===================== -->
+  <section class="section" id="visit">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="label">營業資訊<span>VISIT</span></p>
+        <h2 class="title">營業時間、地址與聯絡</h2>
+      </div>
+
+      <div class="info-grid">
+        <div class="reveal">
+          <table class="hours">
+            <caption>營業時間</caption>
+            <tbody>
+              <tr><th>午市 ｜ ランチ</th><td>12:00 – 15:00（最後點餐 14:30）</td></tr>
+              <tr><th>晚市 ｜ ディナー</th><td>18:00 – 23:00（最後點餐 21:30）</td></tr>
+              <tr class="closed"><th>休息日</th><td>逢星期日及公眾假期</td></tr>
+              <tr><th>席數</th><td>板前 8 席・個室 1 間（4–6 人）</td></tr>
+            </tbody>
+          </table>
+          <p class="hours-note">座位有限，建議提前預約。如需包場或 8 人以上安排，請直接與我們聯絡。</p>
+        </div>
+
+        <div class="reveal">
+          <dl class="contact-list">
+            <div>
+              <dt>地址</dt>
+              <dd>香港中環〇〇街 12 號 1 樓<br><span class="small">（示範地址，待提供正式資料）</span></dd>
+            </div>
+            <div>
+              <dt>交通</dt>
+              <dd>港鐵中環站 D2 出口，步行約 5 分鐘</dd>
+            </div>
+            <div>
+              <dt>電話</dt>
+              <dd><a href="tel:+85200000000">+852 0000 0000</a>　<span class="small">（示範號碼）</span></dd>
+            </div>
+            <div>
+              <dt>WhatsApp</dt>
+              <dd><a href="https://wa.me/85200000000" target="_blank" rel="noopener">+852 0000 0000</a></dd>
+            </div>
+            <div>
+              <dt>電郵</dt>
+              <dd><a href="mailto:hello@shun-hk.example">hello@shun-hk.example</a></dd>
+            </div>
+          </dl>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E9%A6%99%E6%B8%AF%E4%B8%AD%E7%92%B0" target="_blank" rel="noopener">
+            在地圖上查看位置
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESERVATION ===================== -->
+  <section class="section reserve" id="reserve">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="label">線上訂座<span>RESERVATION</span></p>
+        <h2 class="title">留一張檜木前的座位</h2>
+        <p class="lede">填寫以下資料並按「經 WhatsApp 送出」，訂座資料會即時傳給我們，我們會盡快回覆確認。你也可以直接致電訂座。</p>
+      </div>
+
+      <div class="reserve-card reveal">
+        <div>
+          <h3 class="jp">ご予約</h3>
+          <p class="pitch">板前只有八席，晚市經常滿座。我們建議提前三至七天預訂；週末與公眾假期前夕敬請更早安排。</p>
+          <div class="reserve-aside">
+            <p><b>訂座保留時間</b>：15 分鐘</p>
+            <p><b>個室／包場</b>：4–6 人，請於備註說明</p>
+            <p><b>食物敏感／素食</b>：訂座時告知即可安排</p>
+            <p><b>電話訂座</b>：<a href="tel:+85200000000" style="border-bottom:1px solid var(--line-2)">+852 0000 0000</a></p>
+          </div>
+        </div>
+
+        <form class="booking" id="bookingForm" novalidate>
+          <div class="row-2">
+            <div class="field">
+              <label for="bk-name">姓名 *</label>
+              <input id="bk-name" name="name" type="text" autocomplete="name" required placeholder="陳先生 / Ms. Chan">
+            </div>
+            <div class="field">
+              <label for="bk-phone">聯絡電話 *</label>
+              <input id="bk-phone" name="phone" type="tel" autocomplete="tel" required placeholder="9123 4567">
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="bk-date">日期 *</label>
+              <input id="bk-date" name="date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="bk-time">時間 *</label>
+              <select id="bk-time" name="time" required>
+                <option value="">請選擇時段</option>
+                <optgroup label="午市 12:00 – 15:00">
+                  <option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option>
+                </optgroup>
+                <optgroup label="晚市 18:00 – 23:00">
+                  <option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option>
+                  <option>20:00</option><option>20:30</option><option>21:00</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="bk-party">人數 *</label>
+              <input id="bk-party" name="party" type="number" min="1" max="12" value="2" required>
+            </div>
+            <div class="field">
+              <label for="bk-seat">座位偏好</label>
+              <select id="bk-seat" name="seat">
+                <option>板前（8 席）</option>
+                <option>個室（4–6 人）</option>
+                <option>沒有偏好</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="bk-note">備註</label>
+            <textarea id="bk-note" name="note" placeholder="例如：食物敏感、慶祝生日、需要兒童座椅"></textarea>
+          </div>
+          <div class="form-foot">
+            <button class="btn" type="submit">經 WhatsApp 送出訂座</button>
+            <span class="hint">送出後會開啟 WhatsApp，將上述資料傳給我們確認。</span>
+          </div>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="wrap top">
+    <div class="footer-brand">
+      <div class="mark jp">旬 SHUN</div>
+      <p>割烹・和食。八席板前，當造食材，親手呈上。位於香港中環。</p>
+      <p class="hours-mini">午市 12:00–15:00 ｜ 晚市 18:00–23:00<br>逢星期日及公眾假期休息</p>
+    </div>
+
+    <div>
+      <h3>導覽</h3>
+      <ul>
+        <li><a href="#about">關於我們</a></li>
+        <li><a href="#philosophy">料理理念</a></li>
+        <li><a href="#menu">菜式種類</a></li>
+        <li><a href="#space">環境</a></li>
+        <li><a href="#visit">營業資訊</a></li>
+        <li><a href="#reserve">線上訂座</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>菜單</h3>
+      <ul>
+        <li><a href="menu.html#sushi">握壽司</a></li>
+        <li><a href="menu.html#sashimi">刺身・前菜</a></li>
+        <li><a href="menu.html#robata">炉端燒・燒物</a></li>
+        <li><a href="menu.html#tempura">天婦羅</a></li>
+        <li><a href="menu.html#kaiseki">會席御膳</a></li>
+        <li><a href="menu.html#seasonal">季節限定</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>聯絡</h3>
+      <ul>
+        <li>香港中環〇〇街 12 號 1 樓</li>
+        <li><a href="tel:+85200000000">電話 +852 0000 0000</a></li>
+        <li><a href="https://wa.me/85200000000" target="_blank" rel="noopener">WhatsApp 訂座</a></li>
+        <li><a href="mailto:hello@shun-hk.example">hello@shun-hk.example</a></li>
+      </ul>
+      <a class="btn" style="margin-top:22px" href="#reserve">線上訂座</a>
+    </div>
+  </div>
+
+  <div class="wrap bottom">
+    <p>© 2026 旬 SHUN 割烹・和食 · 示範網站（資料待正式提供後更新）</p>
+    <p>Instagram ｜ Facebook ｜ 私隱政策 ｜ 使用條款</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- 示範提示條：記住已關閉 ---------- */
+  var notice = document.getElementById('notice');
+  var noticeClose = document.getElementById('noticeClose');
+  try {
+    if (localStorage.getItem('shun.notice.dismissed') === '1') { notice.hidden = true; }
+  } catch (e) {}
+  noticeClose.addEventListener('click', function () {
+    notice.hidden = true;
+    try { localStorage.setItem('shun.notice.dismissed', '1'); } catch (e) {}
+  });
+
+  /* ---------- 置頂選單：滾動狀態 + 手機開合 ---------- */
+  var header = document.getElementById('siteHeader');
+  var burger = document.getElementById('burger');
+  var nav = document.getElementById('nav');
+
+  function onScroll() {
+    header.classList.toggle('is-stuck', window.scrollY > 20);
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  function closeNav() {
+    nav.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', '開啟選單');
+  }
+  burger.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+  });
+  nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') { closeNav(); } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeNav(); } });
+  window.addEventListener('resize', function () { if (window.innerWidth > 900) { closeNav(); } });
+
+  /* ---------- 當前段落高亮 ---------- */
+  var navLinks = Array.prototype.slice.call(nav.querySelectorAll('a'));
+  var sections = navLinks
+    .map(function (a) { return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window) {
+    var navObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) { return; }
+        navLinks.forEach(function (a) {
+          a.classList.toggle('is-current', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function (s) { navObserver.observe(s); });
+
+    /* ---------- 進場動畫 ---------- */
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
+  }
+
+  /* ---------- 訂座表單：組成 WhatsApp 訊息（無需後端） ---------- */
+  var form = document.getElementById('bookingForm');
+  var status = document.getElementById('formStatus');
+  var WA_NUMBER = '85200000000';           // ← 正式號碼更新此處
+  var dateInput = document.getElementById('bk-date');
+
+  // 日期下限＝今日，上限＝一年後
+  var today = new Date();
+  var iso = function (d) { return d.toISOString().slice(0, 10); };
+  dateInput.min = iso(today);
+  var nextYear = new Date(today.getTime()); nextYear.setFullYear(today.getFullYear() + 1);
+  dateInput.max = iso(nextYear);
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var data = {
+      name:  form.name.value.trim(),
+      phone: form.phone.value.trim(),
+      date:  form.date.value,
+      time:  form.time.value,
+      party: form.party.value,
+      seat:  form.seat.value,
+      note:  form.note.value.trim()
+    };
+
+    var missing = [];
+    if (!data.name) missing.push('姓名');
+    if (!data.phone) missing.push('聯絡電話');
+    if (!data.date) missing.push('日期');
+    if (!data.time) missing.push('時間');
+    if (!data.party || Number(data.party) < 1) missing.push('人數');
+
+    if (missing.length) {
+      status.textContent = '請填寫：' + missing.join('、');
+      form.querySelector('input,select,textarea').focus();
+      return;
+    }
+    if (data.date < iso(today)) {
+      status.textContent = '請選擇今日或之後的日期。';
+      dateInput.focus();
+      return;
+    }
+
+    var lines = [
+      '您好，我想訂座（旬 SHUN）。',
+      '姓名：' + data.name,
+      '電話：' + data.phone,
+      '日期：' + data.date,
+      '時間：' + data.time,
+      '人數：' + data.party + ' 位',
+      '座位：' + data.seat
+    ];
+    if (data.note) { lines.push('備註：' + data.note); }
+
+    var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
+    window.open(url, '_blank', 'noopener');
+
+    status.textContent = '已為你準備好 WhatsApp 訊息（' + data.date + ' ' + data.time + '，' + data.party + ' 位）。如沒有自動開啟，請按此連結：';
+    var a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = '開啟 WhatsApp 傳送訂座';
+    a.style.cssText = 'text-decoration:underline;font-weight:600';
+    status.appendChild(a);
+  });
+
+  /* ---------- 圖片載入失敗時的安全網（相片待提供時仍可閱讀） ---------- */
+  document.querySelectorAll('img').forEach(function (img) {
+    img.addEventListener('error', function () {
+      var host = img.closest('.frame') || img.parentElement;
+      if (host) { host.style.background = 'linear-gradient(135deg, var(--paper-2), var(--line))'; }
+      img.style.visibility = 'hidden';
+    });
+  });
+})();
+</script>
+</body>
+</html>

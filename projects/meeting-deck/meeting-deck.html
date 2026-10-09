@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>AI 培訓產品線規劃會議 · 會議摘要簡報</title>
+<style>
+  /* ============================================================
+     Design tokens
+     ============================================================ */
+  :root {
+    --paper:      #fbfaf7;
+    --paper-2:    #f4f2ec;
+    --surface:    #ffffff;
+    --ink:        #1b232b;
+    --ink-soft:   #48545f;
+    --muted:      #78858f;
+    --line:       #e3e0d8;
+    --line-2:     #d3cfc4;
+    --accent:     #0f6f6c;
+    --accent-2:   #0a5551;
+    --accent-tint:#e4f0ef;
+    --warn:       #9a5b1a;
+    --warn-tint:  #f7ecdc;
+    --shadow:     0 24px 60px -30px rgba(20, 30, 40, .35), 0 2px 8px -2px rgba(20, 30, 40, .10);
+    --font-sans: "Noto Sans TC", "PingFang TC", "Hiragino Sans TC", "Microsoft JhengHei",
+                 "Heiti TC", "Source Han Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  html[data-theme="dark"] {
+    --paper:      #111820;
+    --paper-2:    #0c1218;
+    --surface:    #18222c;
+    --ink:        #eef2f5;
+    --ink-soft:   #c3cdd6;
+    --muted:      #8f9ca8;
+    --line:       #26313c;
+    --line-2:     #35424e;
+    --accent:     #4fc3bc;
+    --accent-2:   #7ad6d0;
+    --accent-tint:#16302f;
+    --warn:       #e0a96d;
+    --warn-tint:  #322517;
+    --shadow:     0 24px 60px -30px rgba(0, 0, 0, .8), 0 2px 8px -2px rgba(0, 0, 0, .5);
+  }
+  @media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] {
+      --paper:      #111820;
+      --paper-2:    #0c1218;
+      --surface:    #18222c;
+      --ink:        #eef2f5;
+      --ink-soft:   #c3cdd6;
+      --muted:      #8f9ca8;
+      --line:       #26313c;
+      --line-2:     #35424e;
+      --accent:     #4fc3bc;
+      --accent-2:   #7ad6d0;
+      --accent-tint:#16302f;
+      --warn:       #e0a96d;
+      --warn-tint:  #322517;
+      --shadow:     0 24px 60px -30px rgba(0, 0, 0, .8), 0 2px 8px -2px rgba(0, 0, 0, .5);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--paper-2);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  /* ============================================================
+     Stage: a fixed 1920×1080 canvas, scaled to any viewport
+     ============================================================ */
+  .stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+  .canvas {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1920px;
+    height: 1080px;
+    background: var(--paper);
+    box-shadow: var(--shadow);
+    transform-origin: center center;
+    transform: translate(-50%, -50%) scale(var(--deck-scale, 1));
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 88px 120px 96px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: opacity .34s cubic-bezier(.2,.7,.3,1), transform .34s cubic-bezier(.2,.7,.3,1);
+    background: var(--paper);
+  }
+  .slide.is-active { opacity: 1; visibility: visible; transform: none; }
+
+  .eyebrow {
+    font-size: 20px;
+    letter-spacing: .34em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .slide-title {
+    margin: 16px 0 0;
+    font-size: 56px;
+    line-height: 1.14;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+  }
+  .lede {
+    margin: 20px 0 0;
+    font-size: 27px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 60ch;
+  }
+  .body { flex: 1; min-height: 0; margin-top: 44px; display: grid; gap: 30px; align-content: center; }
+  .cols { grid-template-columns: 1fr 1fr; }
+  .cols-lead { grid-template-columns: 1.15fr .85fr; }
+  .cols-aside { grid-template-columns: 1.3fr .7fr; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 34px 36px;
+  }
+  .panel h3 { margin: 0 0 16px; font-size: 25px; font-weight: 700; letter-spacing: .01em; }
+  .panel h3 span { color: var(--muted); font-weight: 500; font-size: 21px; margin-left: 10px; }
+  .panel p { margin: 0; font-size: 23px; line-height: 1.6; color: var(--ink-soft); }
+
+  ul.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  ul.ticks li { position: relative; padding-left: 34px; font-size: 25px; line-height: 1.55; }
+  ul.ticks li::before {
+    content: "";
+    position: absolute; left: 4px; top: .62em;
+    width: 14px; height: 2px; background: var(--accent); opacity: .85;
+  }
+  ul.ticks li strong { font-weight: 700; }
+  ul.ticks.tight li { font-size: 23px; }
+
+  .rows { display: grid; }
+  .row {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 36px;
+    padding: 24px 4px;
+    border-top: 1px solid var(--line);
+    align-items: start;
+  }
+  .rows .row:last-child { border-bottom: 1px solid var(--line); }
+  .row .k {
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+  .row .v { font-size: 25px; line-height: 1.55; color: var(--ink); }
+  .row .v em { font-style: normal; color: var(--ink-soft); }
+  .row .v .sub { display: block; margin-top: 8px; font-size: 21px; color: var(--muted); }
+
+  table.tbl { width: 100%; border-collapse: collapse; }
+  table.tbl th {
+    text-align: left;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    color: var(--muted);
+    padding: 0 24px 14px 0;
+    border-bottom: 2px solid var(--line-2);
+    white-space: nowrap;
+  }
+  table.tbl td {
+    font-size: 23px;
+    line-height: 1.5;
+    padding: 20px 24px 20px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.tbl td:first-child { font-weight: 700; white-space: nowrap; }
+  table.tbl tr:last-child td { border-bottom: 0; }
+  table.tbl td em { font-style: normal; color: var(--ink-soft); }
+
+  .quote { margin: 0; padding: 4px 0 0 0; }
+  .quote p { margin: 0; font-size: 29px; line-height: 1.5; }
+  .quote .who { margin-top: 16px; font-size: 21px; color: var(--muted); letter-spacing: .04em; }
+
+  .note { margin: 0; font-size: 20px; line-height: 1.6; color: var(--muted); }
+  .note b { color: var(--ink-soft); font-weight: 600; }
+  .tag {
+    display: inline-block;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--accent);
+    background: var(--accent-tint);
+    border-radius: 999px;
+    padding: 6px 16px;
+  }
+  .tag.warn { color: var(--warn); background: var(--warn-tint); }
+
+  /* Cover */
+  .slide.cover { justify-content: center; padding: 0 140px; }
+  .slide.cover .eyebrow { letter-spacing: .4em; }
+  .cover-title {
+    margin: 30px 0 0;
+    font-size: 96px;
+    line-height: 1.06;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    max-width: 20ch;
+  }
+  .cover-sub { margin: 28px 0 0; font-size: 32px; line-height: 1.5; color: var(--ink-soft); max-width: 42ch; }
+  .cover-rule { height: 1px; background: var(--line-2); margin: 52px 0 32px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 14px 56px; }
+  .meta div { font-size: 22px; color: var(--ink-soft); }
+  .meta div b { display: block; font-size: 19px; letter-spacing: .18em; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+  .hint { margin: 40px 0 0; font-size: 19px; color: var(--muted); letter-spacing: .02em; }
+  .hint kbd {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    border: 1px solid var(--line-2);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    padding: 3px 7px;
+    background: var(--surface);
+    color: var(--ink-soft);
+  }
+
+  /* Closing */
+  .slide.closing { justify-content: center; }
+  .closing-title { margin: 20px 0 0; font-size: 72px; line-height: 1.15; font-weight: 800; letter-spacing: -.015em; }
+  .closing-sub { margin: 26px 0 0; font-size: 28px; line-height: 1.6; color: var(--ink-soft); max-width: 52ch; }
+
+  .folio {
+    position: absolute;
+    left: 120px;
+    bottom: 40px;
+    font-size: 19px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .08em;
+    color: var(--muted);
+  }
+
+  /* ============================================================
+     HUD + controls
+     ============================================================ */
+  .hud {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--line);
+    z-index: 20;
+  }
+  .hud i {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1);
+  }
+  .controls {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    opacity: .5;
+    transition: opacity .2s ease;
+  }
+  .controls:hover, .controls:focus-within { opacity: 1; }
+  @media (hover: none) { .controls { opacity: .85; } }
+  .controls button {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    padding: 10px 16px;
+    min-height: 42px;
+    cursor: pointer;
+    transition: background .15s, color .15s, opacity .15s;
+    white-space: nowrap;
+  }
+  .controls button:hover { background: var(--accent-tint); color: var(--accent-2); }
+  .controls button:disabled { opacity: .35; cursor: not-allowed; }
+  .controls .count {
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    min-width: 74px;
+    text-align: center;
+    letter-spacing: .06em;
+  }
+  .controls .sep { width: 1px; height: 24px; background: var(--line-2); }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+
+  /* ============================================================
+     Print → PDF (one landscape 16:9 page per slide)
+     ============================================================ */
+  @page { size: 1920px 1080px; margin: 0; }
+
+  @media print {
+    html[data-theme], html[data-theme="dark"], html[data-theme="light"], html[data-theme="auto"] {
+      --paper: #ffffff;
+      --paper-2: #ffffff;
+      --surface: #ffffff;
+      --ink: #1b232b;
+      --ink-soft: #48545f;
+      --muted: #6d7a85;
+      --line: #dfdcd4;
+      --line-2: #cbc7bd;
+      --accent: #0f6f6c;
+      --accent-2: #0a5551;
+      --accent-tint: #e4f0ef;
+      --warn: #8a5015;
+      --warn-tint: #f7ece0;
+    }
+    html, body {
+      overflow: visible;
+      height: auto;
+      background: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .stage { position: static; display: block; overflow: visible; }
+    .canvas {
+      position: static !important;
+      left: auto !important;
+      top: auto !important;
+      width: 1920px; height: auto;
+      transform: none !important;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .slide {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      page-break-after: always;
+      break-after: page;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .slide:last-of-type { page-break-after: auto; break-after: auto; }
+    .hud, .controls { display: none !important; }
+    .hint { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hud" aria-hidden="true"><i id="bar"></i></div>
+
+<div class="stage">
+  <div class="canvas" id="canvas">
+
+    <!-- 01 · 封面 -->
+    <section class="slide cover is-active" aria-roledescription="簡報頁" aria-label="封面">
+      <p class="eyebrow">會議摘要 · 產品線規劃</p>
+      <h1 class="cover-title">AI 培訓產品線規劃會議</h1>
+      <p class="cover-sub">未來三個月的新版 AI 課程與 OpenClaw demo：對齊方向、架構與資源分工。</p>
+      <div class="cover-rule"></div>
+      <div class="meta">
+        <div><b>日期</b>2026-07-06（星期一）</div>
+        <div><b>時間</b>20:00–21:00（約一小時）</div>
+        <div><b>平台</b>Teams 線上會議</div>
+        <div><b>與會者</b>Johnny、Ken、May、Ivan、Ada</div>
+      </div>
+      <p class="hint"><kbd>←</kbd> <kbd>→</kbd> 翻頁 · <kbd>Home</kbd> <kbd>End</kbd> 首尾 · <kbd>F</kbd> 全屏 · <kbd>P</kbd> 列印／存 PDF</p>
+    </section>
+
+    <!-- 02 · 一分鐘摘要 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="一分鐘摘要">
+      <p class="eyebrow">摘要</p>
+      <h2 class="slide-title">一分鐘讀完三件事</h2>
+      <div class="body">
+        <div class="rows">
+          <div class="row">
+            <div class="k">01 目標</div>
+            <div class="v">未來三個月要推新版 AI 課程與 OpenClaw demo，並把客戶最常問的三個題目——<strong>Generative AI 實務應用、Security Copilot、AB-730 準備</strong>——整合落同一條路線。<span class="sub">Johnny 開場說明會議目的：先對齊方向與資源安排。</span></div>
+          </div>
+          <div class="row">
+            <div class="k">02 架構</div>
+            <div class="v">以 <strong>「AI Productivity + Governance」</strong>作 umbrella，底下拆成不同 workshop；先有 3 小時管理層版，再有 6 小時深入版（MS-4017 + Copilot training，3 × 2 小時），另備 Security Copilot + AB-730 的 applied skill session。</div>
+          </div>
+          <div class="row">
+            <div class="k">03 分工</div>
+            <div class="v">Johnny 起草 outline、May 寫 demo rundown、Ivan 整理技術前提、Ken 與 Ada 負責報價與 marketing 素材；<strong>下星期一晚再開 45 分鐘 follow-up</strong>。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · 背景：會議目的 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="會議背景與目標">
+      <p class="eyebrow">背景</p>
+      <h2 class="slide-title">今次會議要解決的問題</h2>
+      <p class="lede">Johnny 開場：之後三個月要推新版 AI 課程與 OpenClaw demo，先對齊方向與資源安排。</p>
+      <div class="body cols cols-lead">
+        <div class="panel">
+          <h3>客戶最近的常見查詢</h3>
+          <ul class="ticks">
+            <li>Generative AI 實務應用</li>
+            <li>Security Copilot</li>
+            <li>AB-730 準備</li>
+          </ul>
+          <p style="margin-top:22px">會議判斷：這三類需求應該<span style="color:var(--ink)">整合落同一條路線</span>，而不是各自獨立成課。</p>
+        </div>
+        <div class="panel">
+          <h3>會議規模</h3>
+          <ul class="ticks tight">
+            <li>2026-07-06 20:00–21:00</li>
+            <li>Teams 線上會議，約一小時</li>
+            <li>5 位與會者，涵蓋課程設計、市場、教學、技術與營運</li>
+            <li>目標：不只傾方向，亦順手<span style="color:var(--ink)">定下可複製的基本架構</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · 與會者 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="與會者與角色">
+      <p class="eyebrow">背景</p>
+      <h2 class="slide-title">與會者與各自關注</h2>
+      <div class="body">
+        <table class="tbl">
+          <thead>
+            <tr><th>與會者</th><th>會上角色</th><th>主要關注</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Johnny</td><td>課程設計 · 會議發起</td><td>課程如何拆、架構要可複製；agent 示範與 OpenClaw 方向</td></tr>
+            <tr><td>Ken</td><td>PM（市場角度）</td><td>課程 title 與 description、governance 寫入 outline、回應客戶查詢</td></tr>
+            <tr><td>May</td><td>Trainer（教學）</td><td>3 小時模組分配、hands-on 比例、governance 練習設計</td></tr>
+            <tr><td>Ivan</td><td>技術支援</td><td>現場網絡、M365 license、demo fallback、Security Copilot 的限制</td></tr>
+            <tr><td>Ada</td><td>營運</td><td>排期與 trainer resource、模板化以便報價與 timetable</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 05 · 第一個客戶 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="八月首位客戶需求">
+      <p class="eyebrow">背景</p>
+      <h2 class="slide-title">8 月第一場：觀塘客戶</h2>
+      <p class="lede">Johnny：8 月至少有一個觀塘客戶，之前已 send 過照片講需求。</p>
+      <div class="body cols cols-lead">
+        <div class="panel">
+          <h3>客戶輪廓</h3>
+          <ul class="ticks">
+            <li>對象：<strong>senior management</strong></li>
+            <li>人數：大約 <strong>30 人</strong></li>
+            <li>形式：<strong>3 小時</strong> Copilot 培訓</li>
+          </ul>
+          <h3 style="margin-top:30px">內容重點</h3>
+          <ul class="ticks tight">
+            <li>報告、簡報、資料整理、自動化</li>
+            <li>治理與安全</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>客戶要求的交付</h3>
+          <ul class="ticks tight">
+            <li>Trainer profile</li>
+            <li>Course outline</li>
+            <li>Quotation</li>
+          </ul>
+          <p style="margin-top:22px">Johnny 強調：希望今次會議可以順便 fix 埋基本架構，之後<span style="color:var(--ink)">容易複製去其他客戶</span>。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · 發現：市場訊號 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="市場訊號">
+      <p class="eyebrow">發現</p>
+      <h2 class="slide-title">客戶問的，是落地與安全</h2>
+      <div class="body cols cols-aside">
+        <div>
+          <div class="quote">
+            <p>「AI 安全」、「資料會唔會出外」、「有冇 best practice / policy」——最近的 inquiry 幾乎都會問到。</p>
+            <p class="who">Ken · 會上分享近期客戶查詢</p>
+          </div>
+          <ul class="ticks" style="margin-top:36px">
+            <li>課程至少要有一個 section <strong>專講 governance</strong></li>
+            <li>而且要清楚寫在 outline 裡面，方便 sales 向客戶解釋</li>
+            <li>Ken 提議：最後 30 分鐘做「企業 AI 使用守則 + Q&amp;A」，May 同意</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Marketing 角度</h3>
+          <p>課程 title 與 description 要清晰、唔好太 technical，同時要令管理層覺得落地與安全。</p>
+          <p style="margin-top:20px"><span class="tag">AI Productivity + Governance</span></p>
+          <p style="margin-top:20px">Ken 建議以此作 umbrella，底下拆成不同 workshop。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · 發現：架構共識 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="課程架構共識">
+      <p class="eyebrow">發現</p>
+      <h2 class="slide-title">架構共識：一條主幹，兩種延伸</h2>
+      <div class="body">
+        <div class="rows">
+          <div class="row">
+            <div class="k">Umbrella</div>
+            <div class="v">AI Productivity + Governance<span class="sub">Ken 提議：以單一主題包住所有課程，底下拆 workshop。</span></div>
+          </div>
+          <div class="row">
+            <div class="k">主幹課程</div>
+            <div class="v">MS-4017 + Copilot training → 6 小時一日課，拆 3 個 module，每個 2 小時<span class="sub">Johnny 構思：一日內完成，結構固定，方便複製。</span></div>
+          </div>
+          <div class="row">
+            <div class="k">延伸模組</div>
+            <div class="v">Security Copilot + AB-730 的 applied skill session<span class="sub">可能安排另一日，或當作 extension module 給 IT / security audience。</span></div>
+          </div>
+          <div class="row">
+            <div class="k">設計原則</div>
+            <div class="v">一套可以跨客戶重用的結構，同時保留彈性，可以 swap 出唔同工具（Gemini、Kimi 等）</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 · 發現：教學原則 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="教學設計原則">
+      <p class="eyebrow">發現</p>
+      <h2 class="slide-title">教學原則：少理論，多 demo</h2>
+      <div class="body cols">
+        <div class="panel">
+          <h3>May · 課堂結構</h3>
+          <ul class="ticks tight">
+            <li>3 小時唔好塞太多 module</li>
+            <li>學員若已上過 MS-4018 / MS-4004，可以少啲「Copilot 是乜」的 introduction，時間留多啲做 hands-on</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Johnny · 教學風格</h3>
+          <ul class="ticks tight">
+            <li>少理論、多 demo，多用學員的真實文件做案例</li>
+            <li>保持「由 0 到 1 + 由文件到 slide」的 workflow，唔好只停留在 chat box 層面</li>
+          </ul>
+        </div>
+      </div>
+      <div class="body" style="margin-top:30px">
+        <div class="panel">
+          <h3>參考經驗<span>Johnny 分享</span></h3>
+          <p>之前做 PPT + AI 課，最後 2 小時用 Copilot／Gemini／Kimi 幫學生把 internal memo 變成 slide，效果幾好——學生感覺「即學即用」。希望 Copilot 課與 Generative AI workshop 都保持這種體驗。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 · 證據：3 小時結構 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="三小時課程建議結構">
+      <p class="eyebrow">證據 · 課程設計</p>
+      <h2 class="slide-title">3 小時課程：1 + 1 + 1</h2>
+      <p class="lede">May 的建議——三小時分三節，最後一節把 governance 收進去。</p>
+      <div class="body">
+        <div class="rows">
+          <div class="row">
+            <div class="k">第 1 小時</div>
+            <div class="v">Copilot Chat 概念 + prompt framework</div>
+          </div>
+          <div class="row">
+            <div class="k">第 2 小時</div>
+            <div class="v">365 apps demo：Word / Excel / PowerPoint / Outlook</div>
+          </div>
+          <div class="row">
+            <div class="k">第 3 小時</div>
+            <div class="v">Case study + group exercise（包含 governance）</div>
+          </div>
+        </div>
+        <p class="note"><b>彈性：</b>若學員已上過 MS-4018 / MS-4004，可壓縮 introduction 部分，把時間留給 hands-on。</p>
+      </div>
+    </section>
+
+    <!-- 10 · 證據：6 小時主幹 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="六小時主幹課程">
+      <p class="eyebrow">證據 · 課程設計</p>
+      <h2 class="slide-title">6 小時主幹：3 個 module × 2 小時</h2>
+      <div class="body">
+        <div class="rows">
+          <div class="row">
+            <div class="k">Module 1 · 2 小時</div>
+            <div class="v">Copilot Chat<span class="sub">理解定位、prompt 基礎、Chat + web context</span></div>
+          </div>
+          <div class="row">
+            <div class="k">Module 2 · 2 小時</div>
+            <div class="v">365 Copilot features<span class="sub">Word / Excel / PowerPoint / Outlook demo + hands-on</span></div>
+          </div>
+          <div class="row">
+            <div class="k">Module 3 · 2 小時</div>
+            <div class="v">Use cases + create agent<span class="sub">Case study、Copilot Chat agent、governance</span></div>
+          </div>
+        </div>
+        <p class="note"><b>提醒（Ken）：</b>這個 split 清晰，但 6 小時對管理層可能太長，客戶可能先試 3 小時 version，再考慮 extension。</p>
+      </div>
+    </section>
+
+    <!-- 11 · 證據：A / B 版 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="A 版與 B 版並行">
+      <p class="eyebrow">證據 · 產品設計</p>
+      <h2 class="slide-title">A／B 版並行，讓 sales 有得揀</h2>
+      <div class="body cols">
+        <div class="panel">
+          <h3>A 版<span>3 小時</span></h3>
+          <p>Management briefing + light demo<br>給管理層的入門版，先試水溫。</p>
+        </div>
+        <div class="panel">
+          <h3>B 版<span>6 小時</span></h3>
+          <p>深入版本，加入 extensibility、Security Copilot、agent demo。</p>
+        </div>
+      </div>
+      <div class="body" style="margin-top:30px">
+        <div class="panel">
+          <h3>Ivan 的建議與配套</h3>
+          <ul class="ticks tight">
+            <li>兩個版本都預先準備，sales 可以按客戶 budget 與需求選擇</li>
+            <li>在 internal file 裡清楚寫明 licensing requirement</li>
+            <li>寫明每個 demo 用哪一個 tenant</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 · 證據：技術限制 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="技術可行性與限制">
+      <p class="eyebrow">證據 · 技術</p>
+      <h2 class="slide-title">可行性與限制（Ivan）</h2>
+      <div class="body cols cols-lead">
+        <div class="panel">
+          <h3>現場要先確認</h3>
+          <ul class="ticks">
+            <li>現場網絡</li>
+            <li>M365 license 情況</li>
+          </ul>
+          <h3 style="margin-top:30px">Fallback 方案</h3>
+          <p>若客戶未必全部有 Copilot for M365，就要準備改用 <strong>demo tenant</strong> 或 <strong>錄影 demo</strong>。</p>
+        </div>
+        <div class="panel">
+          <h3>Security Copilot</h3>
+          <p>要小心，<strong>不可以 promise</strong> 客戶一定用到；license 條件與 region 限制要先查清楚。</p>
+          <p style="margin-top:22px"><span class="tag warn">待決定</span></p>
+          <p style="margin-top:16px">Ivan 問 Johnny：Security Copilot 係想做「Applied Skill」加值 module，還是獨立半天課？</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 · 證據：Governance -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="Governance 模組設計">
+      <p class="eyebrow">證據 · Governance</p>
+      <h2 class="slide-title">Governance 怎樣教？（May）</h2>
+      <div class="body">
+        <div class="rows">
+          <div class="row">
+            <div class="k">4 個 check points</div>
+            <div class="v">資料分類 · 使用場景 · 審核流程 · 風險示例<span class="sub">用 3 至 4 個 check points 做治理部分的結構。</span></div>
+          </div>
+          <div class="row">
+            <div class="k">Group exercise</div>
+            <div class="v">學員分組寫出自己部門的「AI 使用守則」，然後用 Copilot 幫佢 refine 成文件</div>
+          </div>
+          <div class="row">
+            <div class="k">課後 handout</div>
+            <div class="v">送一份「AI usage checklist」，增加 perceived value</div>
+          </div>
+          <div class="row">
+            <div class="k">時間安排</div>
+            <div class="v">最後 30 分鐘做「企業 AI 使用守則 + Q&amp;A」<span class="sub">Ken 提議，May 同意。</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14 · 證據：報價與交付 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="報價與交付文件">
+      <p class="eyebrow">證據 · 營運</p>
+      <h2 class="slide-title">報價文件與語言版本</h2>
+      <div class="body cols cols-lead">
+        <div class="panel">
+          <h3>Quotation 必須包括<span>Ada 提醒</span></h3>
+          <ul class="ticks">
+            <li>Course outline</li>
+            <li>Trainer bio</li>
+            <li>Available dates</li>
+            <li>Terms of engagement</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>語言版本</h3>
+          <p>Johnny：最好有 <strong>bilingual</strong>，但優先先出中文版本給本地客戶看，英文可以由中文再翻譯。</p>
+          <h3 style="margin-top:28px">營運待答問題</h3>
+          <ul class="ticks tight">
+            <li>8 月觀塘那一場，trainer 係咪只 Johnny 一個？</li>
+            <li>之後加 6 小時課程與 2 小時 workshop，會否撞到 Feva regular class？</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 15 · 證據：OpenClaw -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="OpenClaw 與 agent 方向">
+      <p class="eyebrow">證據 · 新方向</p>
+      <h2 class="slide-title">OpenClaw 與 agent 示範</h2>
+      <div class="body cols cols-lead">
+        <div class="panel">
+          <h3>OpenClaw workshop<span>2 小時 · 目標 150 人大班</span></h3>
+          <ul class="ticks">
+            <li>Generative AI</li>
+            <li>Prompt vs prompt engineering</li>
+            <li>OpenClaw workflow</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Agent 元素入課</h3>
+          <p>Johnny 想在第三部分加入 <strong>「Copilot Chat create agent」</strong>示範——因為客戶對「AI agent」好有興趣，亦比較貼近現時大部分 AI workshop 的方向。</p>
+          <p style="margin-top:20px">工具層面保留彈性，可 swap Gemini、Kimi 等。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16 · 建議一 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="建議一：把課程產品化">
+      <p class="eyebrow">建議</p>
+      <h2 class="slide-title">建議（一）：把課程產品化</h2>
+      <div class="body">
+        <div class="rows">
+          <div class="row">
+            <div class="k">標準模板</div>
+            <div class="v">先做兩套 template：「標準 3 小時 Copilot management version」與「標準 2 小時 Generative AI + OpenClaw workshop」<span class="sub">Ada 提議：方便做 quotation 與 timetable。</span></div>
+          </div>
+          <div class="row">
+            <div class="k">版本策略</div>
+            <div class="v">A 版（3 小時）與 B 版（6 小時）並行，sales 按客戶 budget 與需求選擇</div>
+          </div>
+          <div class="row">
+            <div class="k">可重用結構</div>
+            <div class="v">以跨客戶重用為前提設計架構，並保留工具替換彈性（Gemini、Kimi 等）</div>
+          </div>
+          <div class="row">
+            <div class="k">首個應用場景</div>
+            <div class="v">8 月觀塘客戶：senior management、約 30 人、3 小時</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17 · 建議二 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="建議二：教學與交付紀律">
+      <p class="eyebrow">建議</p>
+      <h2 class="slide-title">建議（二）：教學與交付紀律</h2>
+      <div class="body cols">
+        <div class="panel">
+          <h3>教與學</h3>
+          <ul class="ticks tight">
+            <li>少理論、多 demo，用學員真實文件</li>
+            <li>教學重點與 demo rundown 精細到每 15 分鐘</li>
+            <li>Module 2、Module 3 的實作部分要寫實</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>風險與合規</h3>
+          <ul class="ticks tight">
+            <li>課前確認 license、tenant、network</li>
+            <li>準備 demo tenant 或錄影 fallback</li>
+            <li>Governance 至少一個 section，並清楚寫入 outline</li>
+            <li>會後派「AI usage checklist」</li>
+          </ul>
+        </div>
+      </div>
+      <div class="body" style="margin-top:30px">
+        <p class="note"><b>語言次序：</b>先出中文版本（本週內），英文版本由中文再翻譯；客戶可 internal circulate 雙語版本。</p>
+      </div>
+    </section>
+
+    <!-- 18 · 下一步分工 -->
+    <section class="slide" aria-roledescription="簡報頁" aria-label="下一步與分工">
+      <p class="eyebrow">下一步</p>
+      <h2 class="slide-title">分工與期限</h2>
+      <div class="body">
+        <table class="tbl">
+          <thead>
+            <tr><th>負責</th><th>工作</th><th>期限</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Johnny</td><td>起草 3 小時 Copilot management workshop outline，以及 6 小時 full course 的 module split</td><td><em>本週內，先出中文版本</em></td></tr>
+            <tr><td>May</td><td>教學重點與 demo rundown（每 15 分鐘內容），特別是 Module 2、Module 3 的實作部分</td><td><em>會議指派</em></td></tr>
+            <tr><td>Ivan</td><td>整理 technical prerequisite（license、tenant、network）與 demo checklist</td><td><em>會議指派</em></td></tr>
+            <tr><td>Ken + Ada</td><td>設計 quotation template 與 marketing one-pager，用於 8 月觀塘客戶</td><td><em>會議指派</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 19 · 收結 -->
+    <section class="slide closing" aria-roledescription="簡報頁" aria-label="下次會議與結語">
+      <p class="eyebrow">下次會議</p>
+      <h2 class="closing-title">下星期一晚，45 分鐘 follow-up</h2>
+      <p class="closing-sub">專注看 outline 與 demo flow；視情況再加入 OpenClaw workshop 的設計。</p>
+      <div class="body" style="margin-top:52px">
+        <div class="rows">
+          <div class="row">
+            <div class="k">一句總結</div>
+            <div class="v">用一條可複製的產品線回應市場：<strong>3 小時入門、6 小時深入、2 小時 OpenClaw 大班工作坊</strong>，並以 governance 貫穿全部內容。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 20 · 資料來源 -->
+    <section class="slide closing" aria-roledescription="簡報頁" aria-label="資料來源">
+      <p class="eyebrow">資料來源</p>
+      <h2 class="closing-title">本簡報的內容全部來自會議記錄</h2>
+      <p class="closing-sub">《一小時會議原始記錄》· 2026-07-06 20:00–21:00 · Teams 線上會議 · 與會者：Johnny、Ken、May、Ivan、Ada。</p>
+      <div class="body" style="margin-top:44px">
+        <p class="note">簡報只整理與重整會上所述內容，<b>未加入任何外部數據、預測或未經提及的資料</b>；所有數字（3 小時、6 小時、2 小時、30 人、150 人、45 分鐘等）均直接取自該記錄。</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="controls" role="group" aria-label="簡報控制">
+  <button type="button" id="prev" aria-label="上一頁">‹ 上一頁</button>
+  <span class="count" id="count" aria-hidden="true">1 / 20</span>
+  <button type="button" id="next" aria-label="下一頁">下一頁 ›</button>
+  <span class="sep" aria-hidden="true"></span>
+  <button type="button" id="theme" aria-label="切換淺色／深色模式">淺 / 深</button>
+  <button type="button" id="print" aria-label="列印或儲存為 PDF">列印 / PDF</button>
+  <button type="button" id="fs" aria-label="全屏顯示" aria-pressed="false">全屏</button>
+</div>
+
+<div class="sr-only" id="live" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var slides   = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var canvas   = document.getElementById('canvas');
+  var bar      = document.getElementById('bar');
+  var countEl  = document.getElementById('count');
+  var liveEl   = document.getElementById('live');
+  var prevBtn  = document.getElementById('prev');
+  var nextBtn  = document.getElementById('next');
+  var themeBtn = document.getElementById('theme');
+  var printBtn = document.getElementById('print');
+  var fsBtn    = document.getElementById('fs');
+  var TOTAL    = slides.length;
+  var KEY      = 'helen.meeting-deck.v1';
+  var THEMES   = ['auto', 'light', 'dark'];
+  var idx = 0;
+  var theme = 'auto';
+
+  /* ---------- persist ---------- */
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify({ slide: idx + 1, theme: theme })); } catch (e) {}
+  }
+  function load() {
+    try {
+      var raw = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!raw) return;
+      theme = THEMES.indexOf(raw.theme) > -1 ? raw.theme : 'auto';
+      if (typeof raw.slide === 'number') idx = Math.min(TOTAL - 1, Math.max(0, raw.slide - 1));
+    } catch (e) {}
+  }
+
+  /* ---------- folio numbers ---------- */
+  slides.forEach(function (s, i) {
+    var f = document.createElement('div');
+    f.className = 'folio';
+    f.setAttribute('aria-hidden', 'true');
+    f.textContent = pad(i + 1) + ' / ' + pad(TOTAL);
+    s.appendChild(f);
+  });
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  /* ---------- navigation ---------- */
+  function go(n, announce) {
+    idx = Math.max(0, Math.min(TOTAL - 1, n));
+    slides.forEach(function (s, i) {
+      var active = i === idx;
+      s.classList.toggle('is-active', active);
+      s.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+    bar.style.transform = 'scaleX(' + ((idx + 1) / TOTAL) + ')';
+    countEl.textContent = (idx + 1) + ' / ' + TOTAL;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === TOTAL - 1;
+    if (location.hash !== '#' + (idx + 1)) {
+      try { history.replaceState(null, '', '#' + (idx + 1)); } catch (e) { location.hash = String(idx + 1); }
+    }
+    save();
+    if (announce) { liveEl.textContent = ''; setTimeout(function () { liveEl.textContent = '第 ' + (idx + 1) + ' 頁，共 ' + TOTAL + ' 頁'; }, 30); }
+  }
+  function next() { go(idx + 1, true); }
+  function prev() { go(idx - 1, true); }
+
+  /* ---------- theme ---------- */
+  function applyTheme() {
+    document.documentElement.setAttribute('data-theme', theme);
+    themeBtn.textContent = theme === 'auto' ? '跟隨系統' : (theme === 'light' ? '淺色' : '深色');
+    themeBtn.setAttribute('aria-label', '顏色模式：' + themeBtn.textContent + '（點擊切換）');
+  }
+  function cycleTheme() {
+    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+    applyTheme(); save();
+  }
+
+  /* ---------- fullscreen ---------- */
+  function toggleFullscreen() {
+    var el = document.documentElement;
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      var fn = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (fn) { fn.call(el).catch(function () {}); }
+    } else {
+      var ex = document.exitFullscreen || document.webkitExitFullscreen;
+      if (ex) { ex.call(document); }
+    }
+  }
+  function syncFsButton() {
+    var on = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    fsBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    fsBtn.textContent = on ? '退出全屏' : '全屏';
+    fit();
+  }
+
+  /* ---------- scale the fixed canvas to the viewport ---------- */
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    canvas.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+  }
+
+  /* ---------- wire up ---------- */
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  themeBtn.addEventListener('click', cycleTheme);
+  printBtn.addEventListener('click', function () { window.print(); });
+  fsBtn.addEventListener('click', toggleFullscreen);
+
+  document.addEventListener('fullscreenchange', syncFsButton);
+  document.addEventListener('webkitfullscreenchange', syncFsButton);
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
+  window.addEventListener('hashchange', function () {
+    var n = parseInt((location.hash || '').replace('#', ''), 10);
+    if (n && n - 1 !== idx) { go(n - 1, true); }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) { return; }
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'Spacebar' || k === 'Enter') {
+      e.preventDefault(); next();
+    } else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || k === 'Backspace') {
+      e.preventDefault(); prev();
+    } else if (k === 'Home') {
+      e.preventDefault(); go(0, true);
+    } else if (k === 'End') {
+      e.preventDefault(); go(TOTAL - 1, true);
+    } else if (k === 'f' || k === 'F') {
+      e.preventDefault(); toggleFullscreen();
+    } else if (k === 'p' || k === 'P') {
+      e.preventDefault(); window.print();
+    } else if (k === 't' || k === 'T') {
+      e.preventDefault(); cycleTheme();
+    }
+  });
+
+  /* ---------- touch swipe ---------- */
+  var x0 = null, y0 = null;
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) { return; }
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null || !e.changedTouches.length) { return; }
+    var dx = e.changedTouches[0].clientX - x0;
+    var dy = e.changedTouches[0].clientY - y0;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? next() : prev(); }
+    x0 = y0 = null;
+  }, { passive: true });
+
+  /* ---------- boot ---------- */
+  load();
+  var fromHash = parseInt((location.hash || '').replace('#', ''), 10);
+  if (fromHash && fromHash >= 1 && fromHash <= TOTAL) { idx = fromHash - 1; }
+  applyTheme();
+  fit();
+  go(idx, false);
+})();
+</script>
+</body>
+</html>
